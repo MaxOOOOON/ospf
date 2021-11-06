@@ -1,0 +1,13 @@
+---
+sysctl_params:
+    net.ipv4.ip_forward: "1"
+    net.ipv4.conf.all.forwarding: "1"
+    net.ipv4.conf.all.rp_filter: "0"
+
+router_name: 'r2'
+eth1_cost: '10'
+eth2_cost: '10'
+router_id: '1.1.1.2'
+area_0_network1: '10.0.0.2/30'
+area_0_network2: '10.20.0.2/30'
+area_cidr: '10.2.0.1/24'

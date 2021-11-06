@@ -1,0 +1,41 @@
+---
+- name: Add epel-release repo
+  yum:
+    name: epel-release
+    state: present
+
+- name: Install quagga
+  yum:
+    name: quagga
+    state: present
+
+
+- name: Set sysctl params
+  sysctl:
+    name: "{{ item.key }}"
+    value: "{{ item.value }}"
+    state: present
+    sysctl_file: /etc/sysctl.conf
+    ignoreerrors: yes
+    reload: yes
+  with_dict: "{{ sysctl_params }}"
+
+
+- name: Set zebra conf
+  template:
+    src: templates/zebra.conf.j2
+    dest: /etc/quagga/zebra.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart zebra
+
+- name: Set ospfd conf
+  template:
+    src: templates/ospfd.conf.j2
+    dest: /etc/quagga/ospfd.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart ospfd
+      
