@@ -1,14 +1,15 @@
 ---
-- name: Add epel-release repo
-  yum:
-    name: epel-release
-    state: present
+- name: Include vars for r1
+  include_vars: r1.yml
+  when: ansible_hostname == 'r1'
 
-- name: Install quagga
-  yum:
-    name: quagga
-    state: present
+- name: Include vars for r2
+  include_vars: r2.yml
+  when: ansible_hostname == 'r2'
 
+- name: Include vars for r3
+  include_vars: r3.yml
+  when: ansible_hostname == 'r3'
 
 - name: Set sysctl params
   sysctl:
@@ -16,8 +17,8 @@
     value: "{{ item.value }}"
     state: present
     sysctl_file: /etc/sysctl.conf
-    ignoreerrors: yes
-    reload: yes
+    ignoreerrors: true
+    reload: true
   with_dict: "{{ sysctl_params }}"
 
 

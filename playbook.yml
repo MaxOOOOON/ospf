@@ -1,18 +1,20 @@
 ---
-- hosts: r1
-  name: Setup r1
-  become: yes
-  roles:
-    - role: r1
+- hosts: all
+  name: Setup soft
+  become: true
+  pre_tasks: 
+  - name: Add epel-release repo
+    yum:
+      name: epel-release
+      state: present
 
-- hosts: r2
-  name: Setup r2
-  become: yes
-  roles:
-    - role: r2
+  - name: Install quagga
+    yum:
+      name: quagga
+      state: present
 
-- hosts: r3
-  name: Setup r3
-  become: yes
+- hosts: all
+  name: Setup routers
+  become: true
   roles:
-    - role: r3
+    - role: router-install
